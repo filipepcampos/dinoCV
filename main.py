@@ -3,15 +3,16 @@ from screen import Screen
 from ai import AI
 import numpy as np
 
-SCREEN_RESOLUTION = (2560, 1440)
+SCREEN_RESOLUTION = (1920, 1080)
 
 def show_image(img, ai):
     cv2.putText(img, str(ai.score), 
             org=(img.shape[0] // 2, 80), 
             fontFace=cv2.FONT_HERSHEY_SIMPLEX, 
             fontScale=1, color=0, thickness=3)
-    cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-    cv2.rectangle(img, (ai.right, ai.top), (ai.right, img.shape[0]-1), (0,255,255))
+    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    cv2.rectangle(img, (ai.right, ai.top), (ai.right, img.shape[0]-1), (0,0,255), 1)
+    cv2.rectangle(img, ai.reference_pixel, ai.reference_pixel, (255,0,0), 1)
     cv2.imshow("Computer Vision", img)
 
 def main():
