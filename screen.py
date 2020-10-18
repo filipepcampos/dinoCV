@@ -21,6 +21,12 @@ class Screen:
         for i, loc in enumerate(locs):
             self.monitor[loc] = game_r[i]
 
+        if(not game_r[2] or not game_r[3]):
+            print("ROI not selected, exiting.")
+            with open("log.txt", "a") as file:
+                file.write(" ERROR: Unable to read ROI, exit(1)\n")
+            exit(1)
+
         self.game_area = self.monitor.copy()
         cv2.destroyAllWindows()
     
@@ -38,6 +44,8 @@ class Screen:
         self.game_area['left'] = left + self.monitor["left"]
         self.game_area['width'] = self.monitor['width'] - left
 
+
+    # Convert an img to BINARY (black/white)
     def convert_img(self, sct_img):
         img = np.array(sct_img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)

@@ -2,8 +2,9 @@ import cv2
 from screen import Screen
 from ai import AI
 import numpy as np
+import datetime
 
-SCREEN_RESOLUTION = (1920, 1080)
+SCREEN_RESOLUTION = (2560, 1440)
 
 def show_image(img, ai, distance, height):
     cv2.putText(img, str(ai.score), 
@@ -18,6 +19,10 @@ def show_image(img, ai, distance, height):
 
 def main():
     screen = Screen(SCREEN_RESOLUTION)
+    with open("log.txt", "a") as file:
+        now = datetime.datetime.now()
+        file.write(now.strftime("%Y-%m-%d %H:%M:%S"))
+        file.write(f"\n res: {SCREEN_RESOLUTION}\n")
     ai = AI(screen.get())
     while True:
         img = screen.get()
