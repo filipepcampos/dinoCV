@@ -2,7 +2,10 @@ import numpy as np
 import math
 
 class Score:
-    initialized = False
+    """
+    Keep track of the score based on color transitions
+    Every 100 points the score blinks exactly 4 times
+    """
     score_location = ()
     score = 0
     blink_count = 0
@@ -16,19 +19,20 @@ class Score:
                 end = img.shape[1] - i
                 break
         self.score_location = (start, end)
-        self.initialized = True
 
     def step(self, img):
-        if self.initialized:
-            start, end = self.score_location       
-            score_sum = np.sum(img[0, start:end])
-            if score_sum == (end-start)*255:
-                if not self.was_white:
-                    self.blink_count += 1
-                    self.score = math.ceil(self.blink_count / 4)
-                self.was_white = True
-            else:
-                self.was_white = False
+        start, end = self.score_location       
+        score_sum = np.sum(img[0, start:end])
+        if score_sum == (end-start)*255:
+            if not self.was_white:
+                self.blink_count += 1
+                self.score = math.ceil(self.blink_count / 4)
+            self.was_white = True
+        else:
+            self.was_white = False
+
+    def get(self):
+        return self.score
 
     def __str__(self):
         return str(self.score)
