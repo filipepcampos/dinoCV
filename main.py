@@ -53,9 +53,9 @@ def main():
 
     game = Game()
     params = {"jump_dist": 100,
-            "jump_dist_delta": 45,
+            "jump_dist_delta": 25,
             "jump_time": 0.2,
-            "crouch_time": 1}
+            "crouch_time": 1.2}
     agent = Agent(params)
     play_once(params, screen_recorder)
   
