@@ -1,7 +1,9 @@
 import cv2
 from ScreenRecorder import ScreenRecorder
 from Display import Display
-from AI import AI
+from Logger import Logger
+from Game import Game
+from Agent import Agent
 import numpy as np
 import datetime
 import time
@@ -12,34 +14,34 @@ def play_once(params, screen):
     """
     Play a single round until gameover
     """
-    ai = AI(params)
-    screen.locate_game()
-    ai.start(screen.get())
-    display = Display()
+    game, display, logger = Game(), Display(), Logger("log.txt")
 
-    with open("log.txt", "a") as file:
-        now = datetime.datetime.now()
-        file.write("\n")
-        file.write(now.strftime("%Y-%m-%d %H:%M:%S"))
-        file.write(f"\n params: {params}\n")
+    screen.locate_game()
+    game.start(screen.get())
+
+    params["dino_height"] = game.get_dinossaur_height()
+    agent = Agent(params)
+
+    logger.log_start(params)
 
     while True:
         img = screen.get()
-        distance, height = ai.step(img)
-        display.show_image(img, ai, distance, height)
+        state = game.get_state(img)
+        action, time = agent.step(state)
+        game.act(action, time)
+        display.show_image(img, game, state)
 
-        if(ai.gameover()):
+        if(game.gameover()):
             break
 
         key = cv2.waitKey(1) & 0xFF
-        if key == ord('q'):
+        if key == ord('q'): # Quit
             cv2.destroyAllWindows()
             exit(0)
-        elif key == ord('s'):
+        elif key == ord('s'): # Relocate the game if any error occurs
             screen.locate_game()
     
-    with open("log.txt", "a") as file:
-        file.write(f" final_score: {ai.score}\n")
+    logger.log_score(game.score)
 
 
 def main():
@@ -49,10 +51,12 @@ def main():
     print("Game will start in 5 seconds")
     wait_animation()
 
+    game = Game()
     params = {"jump_dist": 100,
             "jump_dist_delta": 45,
             "jump_time": 0.2,
             "crouch_time": 1}
+    agent = Agent(params)
     play_once(params, screen_recorder)
   
 
