@@ -1,6 +1,6 @@
 # dinoCV
 
-DinoCV is an computer vision implementation to record, analyze and act upon chrome's offline dinossaur game.
+DinoCV is an computer vision implementation to record, analyze and act upon chrome's offline dinosaur game.
 
 ![](https://media.giphy.com/media/yISQ99Ru1zu6IPLf82/giphy.gif)
 
@@ -22,7 +22,7 @@ Currently there isn't an automatic monitor resolution detection, so you may need
 
 To open the game, just type `chrome://dino` on an chromium-based browser
 
-After the game is open run `python3 main.py` and select the game area, it should at the very least include the dinossaur and score counters while not including any browser border
+After the game is open run `python3 main.py` and select the game area, it should at the very least include the dinosaur and score counters while not including any browser border
 
 Five seconds after the selection, the game will start. In order to send input to the game, the game window must be focused.
 
